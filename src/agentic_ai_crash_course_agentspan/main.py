@@ -12,9 +12,6 @@ while True:
 
     client = OpenAI()
 
-    response = client.responses.create(
-        model="gpt-4o-mini",
-        input=query
-    )
+    response = client.responses.create(model="gpt-4o-mini", input=query)
 
     print(f"AI response: {response.output_text}")
