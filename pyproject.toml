@@ -1,0 +1,22 @@
+[project]
+name = "agentic-ai-crash-course-agentspan"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Kishor Bankar", email = "linkekishor@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "agentspan>=0.2.0",
+    "openai>=2.45.0",
+    "python-dotenv>=1.2.2",
+    "tavily-agent-toolkit>=0.1.0",
+]
+
+[project.scripts]
+agentic-ai-crash-course-agentspan = "agentic_ai_crash_course_agentspan:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
