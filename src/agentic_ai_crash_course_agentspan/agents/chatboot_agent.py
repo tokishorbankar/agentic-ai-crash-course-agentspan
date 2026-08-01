@@ -5,6 +5,8 @@ from tavily_agent_toolkit import search_and_format
 import multiprocessing as mp
 import asyncio
 
+from agentic_ai_crash_course_agentspan.agents.module.response import SupportResponse
+
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -20,10 +22,7 @@ MEMORY = ConversationMemory(max_messages=3)
 SESSION_ID = "chatbot_session"
 
 
-@tool(
-    name="internet_search_tool",
-    description="Search the internet for latest information.",
-)
+@tool
 def internet_search_tool(query: str) -> str:
     """
     Search the internet for latest information.
@@ -42,18 +41,19 @@ def internet_search_tool(query: str) -> str:
     )
 
 
-chatboot_agent = Agent(
+chatbot_agent = Agent(
     name="chatbot_agent",
     model="openai/gpt-4o-mini",
     instructions="You are a helpful agent named Alex. Use tools for better responses.",
     tools=[internet_search_tool],
     memory=MEMORY,
+    output_type=SupportResponse
 )
 
 
 def get_response(query: str):
     with AgentRuntime() as runtime:
-        response = runtime.run(chatboot_agent, query, session_id=SESSION_ID)
+        response = runtime.run(chatbot_agent, query, session_id=SESSION_ID)
         return response
 
 
@@ -67,7 +67,7 @@ def main():
             print("Goodbye!")
             break
         response = get_response(user_input)
-        print(f"Chatbots Agent Response: {response}")
+        print(f"Response: {response['message']}")
 
 
 if __name__ == "__main__":
