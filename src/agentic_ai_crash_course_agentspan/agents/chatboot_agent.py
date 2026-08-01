@@ -1,9 +1,12 @@
-from agentspan.agents import Agent, AgentRuntime, ConversationMemory, tool
+from agentspan.agents import Agent, AgentRuntime, ConversationMemory, tool, mcp_tool
 from dotenv import load_dotenv
 import os
 from tavily_agent_toolkit import search_and_format
 import asyncio
 import multiprocessing
+
+# calculator-agent MCP server (start with: uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py streamable-http)
+CALCULATOR_MCP_URL = os.getenv("CALCULATOR_MCP_URL", "http://localhost:8000/mcp")
 
 load_dotenv()
 
@@ -37,11 +40,23 @@ def internet_search_tool(query: str) -> str:
     )
 
 
+calculator_tools = mcp_tool(
+    server_url=CALCULATOR_MCP_URL,
+    name="calculator-agent",
+    description="Calculator tools from the calculator-agent MCP server",
+    tool_names=["add", "subtract", "multiply", "divide"],
+)
+
+
 chatbot_agent = Agent(
     name="chatbot_agent",
     model="openai/gpt-5.4-mini",
-    instructions="You are a helpful agent named Alex. Introduce yourself when greeting users. Use the internet search tool when you need up-to-date information.",
-    tools=[internet_search_tool],
+    instructions="""
+    You are a helpful agent named Alex. Introduce yourself when greeting users. 
+    Use the internet search tool when you need up-to-date information.
+    Use the calculator-agent MCP tools (add, subtract, multiply, divide) for any calculations.
+    """,
+    tools=[internet_search_tool, calculator_tools],
     memory=memory
 )
 
