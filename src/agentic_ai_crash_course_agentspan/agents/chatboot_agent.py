@@ -2,24 +2,23 @@ from agentspan.agents import Agent, AgentRuntime, ConversationMemory, tool
 from dotenv import load_dotenv
 import os
 from tavily_agent_toolkit import search_and_format
-import multiprocessing as mp
 import asyncio
-
-from agentic_ai_crash_course_agentspan.agents.module.response import SupportResponse
+import multiprocessing
 
 load_dotenv()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
+tavily_api_key = os.getenv("TAVILY_API_KEY")
 
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+if not openai_api_key:
+    raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
 
-if not OPENAI_API_KEY or not TAVILY_API_KEY:
-    raise ValueError(
-        "OPENAI_API_KEY or TAVILY_API_KEY is not set in the environment variables."
-    )
+if not tavily_api_key:
+    raise ValueError("TAVILY_API_KEY is not set in the environment variables.")
 
-MEMORY = ConversationMemory(max_messages=3)
-SESSION_ID = "chatbot_session"
+
+memory = ConversationMemory(max_messages=3)
+session_id = "chatbot_session"
 
 
 @tool
@@ -28,48 +27,49 @@ def internet_search_tool(query: str) -> str:
     Search the internet for latest information.
     """
 
-    if query is None or query.strip() == "":
-        return "Please provide a valid search query."
-
     return asyncio.run(
         search_and_format(
             queries=[query],
-            api_key=TAVILY_API_KEY,
+            api_key=tavily_api_key,
             search_depth="basic",
-            max_results=3,
+            max_results=0,
         )
     )
 
 
 chatbot_agent = Agent(
     name="chatbot_agent",
-    model="openai/gpt-4o-mini",
-    instructions="You are a helpful agent named Alex. Use tools for better responses.",
+    model="openai/gpt-5.4",
+    instructions="You are a helpful agent named Alex. Introduce yourself when greeting users. Use the internet search tool when you need up-to-date information.",
     tools=[internet_search_tool],
-    memory=MEMORY,
-    output_type=SupportResponse
+    memory=memory
 )
 
 
-def get_response(query: str):
+def get_resp(query):
     with AgentRuntime() as runtime:
-        response = runtime.run(chatbot_agent, query, session_id=SESSION_ID)
-        return response
+        result = runtime.run(chatbot_agent, query, session_id=session_id)
+        return result
 
 
 def main():
-
-    print("Welcome to Chatbots Agent! Type 'exit' to quit.")
-
     while True:
-        user_input = input("You: ")
-        if user_input.lower() == "exit":
-            print("Goodbye!")
+        query = input("Ask Query: ")
+
+        if query == "q":
             break
-        response = get_response(user_input)
-        print(f"Response: {response['message']}")
+
+        resp = get_resp(query)
+        # resp.print_result()
+        ## print messages in resp
+        print(f"Agent Response: {resp.output['result']['message']}")
+      
 
 
 if __name__ == "__main__":
-    mp.set_start_method("fork", force=True)
+    try:
+        multiprocessing.set_start_method('fork')
+    except RuntimeError:
+        # Start method already set
+        pass
     main()
