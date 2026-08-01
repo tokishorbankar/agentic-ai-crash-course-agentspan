@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+import json
 import logging
 import multiprocessing
 from typing import Any
@@ -59,30 +61,22 @@ chatbot_agent = Agent(
 
 # Function to format the agent's response for display
 def format_agent_response(response: Any) -> str:
-    logger.debug(f"Agent response received: {response}")
-    
-    output = getattr(response, "output", None) or {}
+    if isinstance(response, SupportResponse):
+        return json.dumps(response.model_dump(), ensure_ascii=False)
 
-    if isinstance(output, dict):
-        if "message" in output:
-            return str(output["message"])
+    if hasattr(response, "output"):
+        output = response.output
+        if isinstance(output, dict):
+            result = output.get("result")
+            if isinstance(result, dict):
+                if "message" in result:
+                    return str(result["message"])
+                return json.dumps(result, ensure_ascii=False)
+            if "message" in output:
+                return str(output["message"])
+            return json.dumps(output, ensure_ascii=False)
 
-        result = output.get("result")
-        if isinstance(result, dict) and "message" in result:
-            return str(result["message"])
-        if result is not None:
-            return str(result)
-
-    logger.debug("Falling back to raw agent output: %s", output)
-    return str(output)
-
-
-# Function to log agent events
-def _log_agent_event(event: Any) -> None:
-    if event.type == "tool_call" and event.args:
-        logger.info("Tool call event: %s", event.args)
-    elif event.type == "tool_result":
-        logger.info("Tool result event: %s", event.result)
+    return str(response)
 
 
 # Function to run an interactive prompt through the agent runtime
@@ -92,20 +86,13 @@ def run_interactive(prompt: str) -> Any:
     # Use the MCP server context to ensure the MCP server is running
     with mcp_server_context():
         with AgentRuntime() as runtime:
-            # Start the agent execution and get a handle to the execution
-            handle = runtime.start(chatbot_agent, prompt, session_id=SESSION_ID)
-            logger.debug("Agent execution started: %s", handle.execution_id)
-
-            # Stream and log events from the agent execution
-            for event in handle.stream():
-                _log_agent_event(event)
-
-            # Wait for the agent execution to complete and get the result
-            result = handle.join(timeout=AGENT_JOIN_TIMEOUT_SECONDS)
-            logger.debug("Agent execution completed: %s", handle.execution_id)
-
-            # Return the result of the agent execution
-            return result
+            response_coro = runtime.run_async(
+                chatbot_agent,
+                prompt,
+                session_id=SESSION_ID,
+                timeout=AGENT_JOIN_TIMEOUT_SECONDS,
+            )
+            return asyncio.run(response_coro)
 
 
 # Function to check if the prompt is an exit command
