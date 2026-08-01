@@ -17,4 +17,4 @@ while True:
         input=query
     )
 
-    print(f"Agentic AI: {response.output_text}")
+    print(f"AI response: {response.output_text}")
