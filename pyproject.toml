@@ -1,17 +1,16 @@
 [project]
 name = "agentic-ai-crash-course-agentspan"
 version = "0.1.0"
-description = "Add your description here"
+description = "Agentic AI Crash Course Agentspan"
 readme = "README.md"
-authors = [
-    { name = "Kishor Bankar", email = "linkekishor@gmail.com" }
-]
+authors = [{ name = "Kishor Bankar", email = "linkekishor@gmail.com" }]
 requires-python = ">=3.13"
 dependencies = [
     "agentspan>=0.2.0",
     "mcp[cli]>=1.29.0",
     "openai>=2.45.0",
     "python-dotenv>=1.2.2",
+    "pydantic>=2.8.0",
     "tavily-agent-toolkit>=0.1.0",
 ]
 

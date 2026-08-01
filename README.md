@@ -1,9 +1,17 @@
 # Agentic AI Crash Course
 
+## ChatBot Agent
+
+> Activate Environment
+
+```shell
+uv run src/agentic_ai_crash_course_agentspan/agents/chatbot_agent.py
+```
+
 ## Requirements
 
 - Python 3.13 or newer
-- `uv` for dependency management
+- `uv` for dependency management and running examples
 - OpenAI API key
 - Tavily API key for `chatbot_agent.py` internet search
 
@@ -22,7 +30,13 @@ OPENAI_API_KEY=your_openai_api_key
 TAVILY_API_KEY=your_tavily_api_key
 ```
 
-- Run any example with `uv run`.
+- For optional overrides, set:
+
+```env
+CALCULATOR_MCP_URL=http://localhost:8000/mcp
+```
+
+- See `SETUP.md` for full setup, run, stop, and usage details.
 
 ## Dependencies
 
@@ -41,6 +55,18 @@ The main dependencies are:
 
 ## [UI AgentSpan for Full execution history](https://agentspan.ai/docs/quickstart/)
 
+- Start the server
+
+```
+agentspan server start
+```
+
+- Stop the server
+
+```
+agentspan server stop
+```
+
 ```curl
 http://localhost:6767/ui
 ```
@@ -51,7 +77,7 @@ http://localhost:6767/ui
 lsof -ti:<PORT> | xargs kill -9 2>/dev/null || echo "No process found on port <PORT>"
 ```
 
-* Example
+- Example
 
 ```
 lsof -ti:6767 | xargs kill -9 2>/dev/null 

@@ -23,7 +23,7 @@ The Model Context Protocol (MCP) is a standardized protocol for communication be
 - Prompt templates
 - Standardized communication between clients and servers
 
-## Project Structure
+## MCP Project Structure
 
 ```
 src/agentic_ai_crash_course_agentspan/mcp/
@@ -60,7 +60,7 @@ The MCP server exposes calculator tools via stdio transport.
 ### Method 1: Direct Execution
 
 ```bash
-uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py
+uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py streamable-http
 ```
 
 The server will start and wait for connections on stdin/stdout.
@@ -113,7 +113,7 @@ The inspector is included with `mcp[cli]` which is already in your dependencies.
 ### Start the Inspector
 
 ```bash
-npx @modelcontextprotocol/inspector uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py
+npx @modelcontextprotocol/inspector uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py streamable-http
 ```
 
 Or using the Python CLI:
@@ -302,6 +302,12 @@ except Exception as e:
 
    ```bash
    mcp dev src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py
+   ```
+
+4. Start the MCP server with streamable HTTP transport:
+
+   ```bash
+   uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py streamable-http
    ```
 
 > Kill process
