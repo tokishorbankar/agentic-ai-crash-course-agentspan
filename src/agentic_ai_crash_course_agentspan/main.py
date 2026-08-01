@@ -14,9 +14,7 @@ while True:
 
     response = client.responses.create(
         model="gpt-4o-mini",
-        messages=[
-            {"role": "user", "content": query}
-        ]
+        input=query
     )
 
     print(f"Agentic AI: {response.output_text}")
