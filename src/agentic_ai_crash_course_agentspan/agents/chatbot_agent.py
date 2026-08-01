@@ -59,6 +59,8 @@ chatbot_agent = Agent(
 
 # Function to format the agent's response for display
 def format_agent_response(response: Any) -> str:
+    logger.debug(f"Agent response received: {response}")
+    
     output = getattr(response, "output", None) or {}
 
     if isinstance(output, dict):

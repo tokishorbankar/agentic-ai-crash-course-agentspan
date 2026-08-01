@@ -36,7 +36,7 @@ TAVILY_API_KEY=your_tavily_api_key
 CALCULATOR_MCP_URL=http://localhost:8000/mcp
 ```
 
-- See `SETUP.md` for full setup, run, stop, and usage details.
+- See [SETUP](SETUP.md) for full setup, run, stop, and usage details.
 
 ## Dependencies
 
