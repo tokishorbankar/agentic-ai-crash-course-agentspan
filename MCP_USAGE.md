@@ -304,6 +304,12 @@ except Exception as e:
    mcp dev src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py
    ```
 
+4. Start the MCP server with streamable HTTP transport:
+
+   ```bash
+   uv run src/agentic_ai_crash_course_agentspan/mcp/mcp-server.py streamable-http
+   ```
+
 > Kill process
 
 ```

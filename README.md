@@ -41,6 +41,18 @@ The main dependencies are:
 
 ## [UI AgentSpan for Full execution history](https://agentspan.ai/docs/quickstart/)
 
+- Start the server
+
+```
+agentspan server start
+```
+
+- Stop the server
+
+```
+agentspan server stop
+```
+
 ```curl
 http://localhost:6767/ui
 ```
@@ -51,8 +63,16 @@ http://localhost:6767/ui
 lsof -ti:<PORT> | xargs kill -9 2>/dev/null || echo "No process found on port <PORT>"
 ```
 
-* Example
+- Example
 
 ```
 lsof -ti:6767 | xargs kill -9 2>/dev/null 
+```
+
+## ChatBot Agent
+
+> Activate Environment
+
+```shell
+uv run src/agentic_ai_crash_course_agentspan/agents/chatbot_agent.py
 ```
