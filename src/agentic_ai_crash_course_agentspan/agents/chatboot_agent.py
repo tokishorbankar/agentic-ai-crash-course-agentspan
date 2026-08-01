@@ -39,7 +39,7 @@ def internet_search_tool(query: str) -> str:
 
 chatbot_agent = Agent(
     name="chatbot_agent",
-    model="openai/gpt-5.4",
+    model="openai/gpt-5.4-mini",
     instructions="You are a helpful agent named Alex. Introduce yourself when greeting users. Use the internet search tool when you need up-to-date information.",
     tools=[internet_search_tool],
     memory=memory
