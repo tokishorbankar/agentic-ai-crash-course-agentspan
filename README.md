@@ -38,3 +38,21 @@ The main dependencies are:
 - Keep `.env` out of version control because it contains API keys.
 - The customer support database is mocked in code and is only for learning purposes.
 - The scripts are interactive examples, not production services.
+
+## UI AgentSpan for Full execution history
+
+```curl
+http://localhost:6767/ui
+```
+
+> Kill process
+
+```
+lsof -ti:<PORT> | xargs kill -9 2>/dev/null || echo "No process found on port <PORT>"
+```
+
+* Example
+
+```
+lsof -ti:6767 | xargs kill -9 2>/dev/null 
+```
