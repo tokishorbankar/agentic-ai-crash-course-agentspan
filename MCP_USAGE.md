@@ -23,7 +23,7 @@ The Model Context Protocol (MCP) is a standardized protocol for communication be
 - Prompt templates
 - Standardized communication between clients and servers
 
-## Project Structure
+## MCP Project Structure
 
 ```
 src/agentic_ai_crash_course_agentspan/mcp/
