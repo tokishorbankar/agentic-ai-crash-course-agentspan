@@ -39,7 +39,7 @@ The main dependencies are:
 - The customer support database is mocked in code and is only for learning purposes.
 - The scripts are interactive examples, not production services.
 
-## UI AgentSpan for Full execution history
+## [UI AgentSpan for Full execution history](https://agentspan.ai/docs/quickstart/)
 
 ```curl
 http://localhost:6767/ui
